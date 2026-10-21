@@ -1,0 +1,14 @@
+.loginContainer{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    height: 100vh;
+    padding: 60px;
+}
+.loginImage{
+    padding: 100px;
+  
+}
+.imageContainer{
+    padding: 100px;
+}

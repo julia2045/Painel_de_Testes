@@ -1,0 +1,17 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+}
+
+
+.ibm-plex-sans {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.flexColumn{
+    display: flex;
+    flex-direction: column;
+}

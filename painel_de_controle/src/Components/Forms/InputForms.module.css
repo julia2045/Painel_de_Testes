@@ -1,0 +1,38 @@
+.form_control{
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.form_control label{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.input_container{
+    position: relative;
+    min-width: 100%;
+}
+.input_container input{
+    width: 100%;
+    position: relative;
+    padding:15px;
+    border: 1px solid #8a94a6;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 16px;
+    color: #151a23;
+    background: #ffffff;
+
+}
+
+.eyeIcon{
+     position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+}
