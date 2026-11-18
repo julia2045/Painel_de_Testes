@@ -8,6 +8,7 @@
 .form_control label{
     font-size: 20px;
     font-weight: 500;
+    margin-bottom: 10px;
 }
 
 .input_container{
@@ -24,6 +25,7 @@
     font-size: 16px;
     color: #151a23;
     background: #ffffff;
+    padding: 10px
 
 }
 

@@ -21,7 +21,9 @@ app.use(express.json())
 app.get("/", (req, res) => {
     res.send("Servidor rodando")
 })
-
+const authRoutes = require("./routes/auth")
+//Uso as rotas de autenticação
+app.use("/auth", authRoutes)
 //Ligoo servidor e deixo ele esperando requisições na porta definida
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`)
