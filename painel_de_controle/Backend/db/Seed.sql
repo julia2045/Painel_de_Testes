@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict ac33LkydOFkAliYI8AB6ByWtHXTTk74tfRNaWCpyz9n83cIZI2y8wSRJFbNRMPo
+\restrict GVS1oHCVsoTm26elr4yVgvW2W0m4ZE8O0oaS3oaUxB609n5KJSZhVLEpmKtWVVt
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
 
--- Started on 2026-11-21 17:52:32
+-- Started on 2026-11-21 18:07:05
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -30,7 +30,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 
 
 --
--- TOC entry 5099 (class 0 OID 0)
+-- TOC entry 5101 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: 
 --
@@ -75,7 +75,7 @@ CREATE SEQUENCE public.projects_id_seq
 ALTER SEQUENCE public.projects_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5100 (class 0 OID 0)
+-- TOC entry 5102 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -101,6 +101,7 @@ CREATE TABLE public.runs (
     failed_count integer DEFAULT 0 NOT NULL,
     skipped_count integer DEFAULT 0 NOT NULL,
     name character varying(20),
+    flaky_count integer DEFAULT 0 NOT NULL,
     CONSTRAINT runs_status_check CHECK (((status)::text = ANY ((ARRAY['running'::character varying, 'passed'::character varying, 'failed'::character varying])::text[])))
 );
 
@@ -124,7 +125,7 @@ CREATE SEQUENCE public.runs_id_seq
 ALTER SEQUENCE public.runs_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5101 (class 0 OID 0)
+-- TOC entry 5103 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: runs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -147,6 +148,7 @@ CREATE TABLE public.test_results (
     duration_ms integer,
     error_message text,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
+    retries integer DEFAULT 0 NOT NULL,
     CONSTRAINT test_results_status_check CHECK (((status)::text = ANY ((ARRAY['passed'::character varying, 'failed'::character varying, 'timedOut'::character varying, 'skipped'::character varying, 'interrupted'::character varying])::text[])))
 );
 
@@ -170,7 +172,7 @@ CREATE SEQUENCE public.test_results_id_seq
 ALTER SEQUENCE public.test_results_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5102 (class 0 OID 0)
+-- TOC entry 5104 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: test_results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -214,7 +216,7 @@ CREATE SEQUENCE public.users_id_seq
 ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5103 (class 0 OID 0)
+-- TOC entry 5105 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -239,7 +241,7 @@ ALTER TABLE ONLY public.runs ALTER COLUMN id SET DEFAULT nextval('public.runs_id
 
 
 --
--- TOC entry 4920 (class 2604 OID 24863)
+-- TOC entry 4921 (class 2604 OID 24863)
 -- Name: test_results id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -255,7 +257,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 4935 (class 2606 OID 24824)
+-- TOC entry 4937 (class 2606 OID 24824)
 -- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -264,7 +266,7 @@ ALTER TABLE ONLY public.projects
 
 
 --
--- TOC entry 4937 (class 2606 OID 24826)
+-- TOC entry 4939 (class 2606 OID 24826)
 -- Name: projects projects_user_name_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -273,7 +275,7 @@ ALTER TABLE ONLY public.projects
 
 
 --
--- TOC entry 4940 (class 2606 OID 24853)
+-- TOC entry 4942 (class 2606 OID 24853)
 -- Name: runs runs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -282,7 +284,7 @@ ALTER TABLE ONLY public.runs
 
 
 --
--- TOC entry 4943 (class 2606 OID 24874)
+-- TOC entry 4945 (class 2606 OID 24874)
 -- Name: test_results test_results_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -291,7 +293,7 @@ ALTER TABLE ONLY public.test_results
 
 
 --
--- TOC entry 4926 (class 2606 OID 24808)
+-- TOC entry 4928 (class 2606 OID 24808)
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -300,7 +302,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4928 (class 2606 OID 24810)
+-- TOC entry 4930 (class 2606 OID 24810)
 -- Name: users users_phone_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -309,7 +311,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4930 (class 2606 OID 24804)
+-- TOC entry 4932 (class 2606 OID 24804)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -318,7 +320,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4932 (class 2606 OID 24806)
+-- TOC entry 4934 (class 2606 OID 24806)
 -- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -327,7 +329,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4933 (class 1259 OID 24880)
+-- TOC entry 4935 (class 1259 OID 24880)
 -- Name: idx_projects_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -335,7 +337,7 @@ CREATE INDEX idx_projects_user_id ON public.projects USING btree (user_id);
 
 
 --
--- TOC entry 4938 (class 1259 OID 24881)
+-- TOC entry 4940 (class 1259 OID 24881)
 -- Name: idx_runs_project_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -343,7 +345,7 @@ CREATE INDEX idx_runs_project_id ON public.runs USING btree (project_id);
 
 
 --
--- TOC entry 4941 (class 1259 OID 24882)
+-- TOC entry 4943 (class 1259 OID 24882)
 -- Name: idx_test_results_run_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -351,7 +353,7 @@ CREATE INDEX idx_test_results_run_id ON public.test_results USING btree (run_id)
 
 
 --
--- TOC entry 4944 (class 2606 OID 24827)
+-- TOC entry 4946 (class 2606 OID 24827)
 -- Name: projects projects_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -360,7 +362,7 @@ ALTER TABLE ONLY public.projects
 
 
 --
--- TOC entry 4945 (class 2606 OID 24854)
+-- TOC entry 4947 (class 2606 OID 24854)
 -- Name: runs runs_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -369,7 +371,7 @@ ALTER TABLE ONLY public.runs
 
 
 --
--- TOC entry 4946 (class 2606 OID 24875)
+-- TOC entry 4948 (class 2606 OID 24875)
 -- Name: test_results test_results_run_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -377,11 +379,11 @@ ALTER TABLE ONLY public.test_results
     ADD CONSTRAINT test_results_run_id_fkey FOREIGN KEY (run_id) REFERENCES public.runs(id) ON DELETE CASCADE;
 
 
--- Completed on 2026-11-21 17:52:33
+-- Completed on 2026-11-21 18:07:05
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict ac33LkydOFkAliYI8AB6ByWtHXTTk74tfRNaWCpyz9n83cIZI2y8wSRJFbNRMPo
+\unrestrict GVS1oHCVsoTm26elr4yVgvW2W0m4ZE8O0oaS3oaUxB609n5KJSZhVLEpmKtWVVt
 
