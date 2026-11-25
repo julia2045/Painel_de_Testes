@@ -1,5 +1,5 @@
 //importando o middleware de autenticação
-const authMiddleware = require('../middleware/auth');
+const authMiddleware = require('../middleware/authLogin');
 //TRAGO A BIBILIOTECA EXPRESSA PARA CRIAR UM SERVIDOR PARA ROTAS 
 const express = require('express')
 //TRAGO A BIBILIOTECA BCRYPT PARA CRIPTOGRAFAR SENHAS

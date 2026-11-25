@@ -28,3 +28,6 @@ app.use("/auth", authRoutes)
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`)
 })
+
+const runsRoutes = require("./routes/Runs")
+app.use("/runs", runsRoutes)
